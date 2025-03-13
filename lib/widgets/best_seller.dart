@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class FlashSale extends StatelessWidget {
-  const FlashSale({super.key});
+class BestSeller extends StatelessWidget {
+  const BestSeller({super.key});
 
-  final List<Map<String, String>> flashSaleProducts = const [
+  final List<Map<String, String>> bestSellerProducts = const [
     {
       "image": "assets/images/product.jpg",
       "brand": "MAYBELINE",
@@ -38,11 +38,7 @@ class FlashSale extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFFBBFBE6), Color(0xFFC6EF97)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Colors.white,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +46,7 @@ class FlashSale extends StatelessWidget {
           Row(
             children: [
               const Text(
-                "FlashSale   ",
+                "Sản Phẩm Bán Chạy   ",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -62,20 +58,6 @@ class FlashSale extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Row(
-                  children: [
-                    // Icon(Icons.timer, color: Colors.green, size: 16),
-                    SizedBox(width: 4),
-                    Text(
-                      "02 : 12 : 49 : 15",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
                 ),
               ),
               const SizedBox(width: 10),
@@ -95,7 +77,7 @@ class FlashSale extends StatelessWidget {
             height: 320,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: flashSaleProducts.length,
+              itemCount: bestSellerProducts.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 160,
@@ -121,7 +103,7 @@ class FlashSale extends StatelessWidget {
                         children: [
                           Image.asset(
                             // Hiển thị hình ảnh từ gói tài sản.
-                            flashSaleProducts[index]["image"]!,
+                            bestSellerProducts[index]["image"]!,
                             width: 140,
                             height: 140,
                             fit: BoxFit
@@ -131,23 +113,20 @@ class FlashSale extends StatelessWidget {
                             // Đặt widget ở góc trên bên phải của Stack.
                             top: 0,
                             right: 0,
-                            child: Container(
-                              // Container để chứa văn bản "Freeship 40k".
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                // Trang trí Container với nền màu xanh lá và góc bo tròn.
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: const Text(
-                                // Widget Text để hiển thị "Freeship 40k".
-                                "Freeship 40k",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
+                            child: ClipPath(
+                              clipper:
+                                  ArrowClipper(), // Cắt hình theo đường viền tùy chỉnh
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                color: Colors.red,
+                                child: Text(
+                                  "  -${bestSellerProducts[index]["discount"]!}",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -156,7 +135,7 @@ class FlashSale extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       // Text(
-                      //   flashSaleProducts[index]["brand"]!,
+                      //   bestSellerProducts[index]["brand"]!,
                       //   textAlign: TextAlign.center,
                       //   style: const TextStyle(
                       //     fontSize: 12,
@@ -167,7 +146,7 @@ class FlashSale extends StatelessWidget {
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          flashSaleProducts[index]["brand"]!,
+                          bestSellerProducts[index]["brand"]!,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 12,
@@ -177,7 +156,7 @@ class FlashSale extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        flashSaleProducts[index]["name"]!,
+                        bestSellerProducts[index]["name"]!,
                         textAlign: TextAlign.center,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -190,36 +169,17 @@ class FlashSale extends StatelessWidget {
                             .spaceBetween, // Căn giữa theo chiều ngang
                         children: [
                           Text(
-                            flashSaleProducts[index]["price"]!,
+                            bestSellerProducts[index]["price"]!,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.red,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          ClipPath(
-                            clipper: ArrowClipper(
-                                heightScale: 0.7,
-                                widthScale:
-                                    1.0), // Giảm chiều cao & chiều ngang
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              color: Colors.red,
-                              child: const Text(
-                                "-30%",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                       Text(
-                        flashSaleProducts[index]["original_price"]!,
+                        bestSellerProducts[index]["original_price"]!,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
@@ -228,7 +188,7 @@ class FlashSale extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Đã bán ${flashSaleProducts[index]["sold"]}",
+                        "Đã bán ${bestSellerProducts[index]["sold"]}",
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
@@ -247,39 +207,29 @@ class FlashSale extends StatelessWidget {
 }
 
 class ArrowClipper extends CustomClipper<Path> {
-  final double heightScale; // Tỉ lệ giảm chiều cao thân
-  final double widthScale; // Tỉ lệ giảm chiều ngang tổng thể
-
-  ArrowClipper({this.heightScale = 1.0, this.widthScale = 1.0});
-
   @override
   Path getClip(Size size) {
     double radius = 6; // Độ cong của góc
-    double arrowWidth = 8; // Giữ nguyên độ rộng mũi tên
-    double newHeight =
-        size.height * heightScale; // Điều chỉnh chiều cao phần thân
-    double heightAdjust = (size.height - newHeight) / 2; // Canh giữa phần thân
-    double newWidth = size.width * widthScale; // Điều chỉnh chiều ngang
-    double widthAdjust = (size.width - newWidth) / 2; // Căn giữa phần ngang
+    double arrowWidth = 12; // Tăng độ rộng mũi tên
+    double heightAdjust = 0; // Giảm chiều cao xuống một chút
 
     Path path = Path();
 
-    path.moveTo(widthAdjust, size.height / 2); // Bắt đầu từ mũi tên
-    path.lineTo(widthAdjust + arrowWidth, heightAdjust); // Mũi tên hướng lên
-    path.lineTo(widthAdjust + newWidth - radius, heightAdjust); // Vẽ sang phải
+    path.moveTo(0, (size.height - heightAdjust) / 2); // Bắt đầu từ mũi tên
+    path.lineTo(arrowWidth, 0); // Đẩy mũi tên lên cao hơn chút
+    path.lineTo(size.width - radius, 0); // Vẽ sang phải
 
     // Bo góc trên phải
-    path.quadraticBezierTo(widthAdjust + newWidth, heightAdjust,
-        widthAdjust + newWidth, heightAdjust + radius);
-    path.lineTo(widthAdjust + newWidth, size.height - radius - heightAdjust);
+    path.quadraticBezierTo(size.width, 0, size.width, radius);
+
+    path.lineTo(size.width, size.height - radius - heightAdjust);
 
     // Bo góc dưới phải
-    path.quadraticBezierTo(widthAdjust + newWidth, size.height - heightAdjust,
-        widthAdjust + newWidth - radius, size.height - heightAdjust);
+    path.quadraticBezierTo(size.width, size.height - heightAdjust,
+        size.width - radius, size.height - heightAdjust);
 
-    path.lineTo(
-        widthAdjust + arrowWidth, size.height - heightAdjust); // Sang trái
-    path.lineTo(widthAdjust, size.height / 2); // Kết thúc ở mũi tên
+    path.lineTo(arrowWidth, size.height - heightAdjust); // Sang trái
+    path.lineTo(0, (size.height - heightAdjust) / 2); // Kết thúc ở mũi tên
 
     path.close();
     return path;

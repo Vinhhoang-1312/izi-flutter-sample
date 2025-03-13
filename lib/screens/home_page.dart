@@ -4,18 +4,19 @@ import '../widgets/category_list.dart';
 import '../widgets/flash_sale.dart';
 import '../widgets/product_section.dart';
 import '../widgets/banner_slider.dart';
+import '../widgets/best_seller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(
-          255, 237, 237, 237), // Đặt nền trắng cho toàn bộ trang
+    return const Scaffold(
+      backgroundColor:
+          Color.fromARGB(255, 237, 237, 237), // Đặt nền trắng cho toàn bộ trang
       body: SingleChildScrollView(
         child: Column(
-          children: const [
+          children: [
             SearchBarWidget(), // Thanh tìm kiếm
             SizedBox(height: 20), // Khoảng cách
             BannerSlider(), // Slider có indicator
@@ -23,6 +24,8 @@ class HomePage extends StatelessWidget {
             CategoryList(), // Danh mục sản phẩm
             SizedBox(height: 20),
             FlashSale(), // Flash Sale
+            SizedBox(height: 20),
+            BestSeller(), // Best Seller
             SizedBox(height: 20),
             // ProductSection(
             //   title: "Sản phẩm bán chạy",
