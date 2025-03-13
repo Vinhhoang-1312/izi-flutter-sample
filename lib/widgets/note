@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class BestSeller extends StatelessWidget {
-  const BestSeller({super.key});
+class ProductSection extends StatelessWidget {
+  const ProductSection({super.key});
 
-  final List<Map<String, String>> bestSellerProducts = const [
+  final List<Map<String, String>> listOfProducts = const [
     {
       "image": "assets/images/product.jpg",
       "name": "Nike Air Max 270 full color",
@@ -75,7 +75,7 @@ class BestSeller extends StatelessWidget {
             height: 300, // Giảm chiều cao để không bị dư khoảng trống
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: bestSellerProducts.length,
+              itemCount: listOfProducts.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: 160, // Thu nhỏ chiều rộng một chút
@@ -102,7 +102,7 @@ class BestSeller extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
-                              bestSellerProducts[index]["image"]!,
+                              listOfProducts[index]["image"]!,
                               width: 140,
                               height: 140,
                               fit: BoxFit.cover,
@@ -118,7 +118,7 @@ class BestSeller extends StatelessWidget {
                                     horizontal: 8, vertical: 4),
                                 color: Colors.red,
                                 child: Text(
-                                  "-${bestSellerProducts[index]["discount"]!}",
+                                  "-${listOfProducts[index]["discount"]!}",
                                   style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.white,
@@ -131,7 +131,7 @@ class BestSeller extends StatelessWidget {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        bestSellerProducts[index]["name"]!,
+                        listOfProducts[index]["name"]!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -139,14 +139,14 @@ class BestSeller extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        bestSellerProducts[index]["price"]!,
+                        listOfProducts[index]["price"]!,
                         style: const TextStyle(
                             fontSize: 14,
                             color: Colors.red,
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        bestSellerProducts[index]["original_price"]!,
+                        listOfProducts[index]["original_price"]!,
                         style: const TextStyle(
                             fontSize: 12,
                             color: Colors.grey,
@@ -175,7 +175,7 @@ class BestSeller extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  bestSellerProducts[index]["rating"]!,
+                                  listOfProducts[index]["rating"]!,
                                   style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold),
@@ -185,7 +185,7 @@ class BestSeller extends StatelessWidget {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            "${bestSellerProducts[index]["sold"]} đã bán",
+                            "${listOfProducts[index]["sold"]} đã bán",
                             style: const TextStyle(
                                 fontSize: 12, color: Colors.grey),
                           ),
@@ -198,7 +198,7 @@ class BestSeller extends StatelessWidget {
                               color: Colors.orange, size: 12),
                           const SizedBox(width: 4),
                           Text(
-                            bestSellerProducts[index]["location"]!,
+                            listOfProducts[index]["location"]!,
                             style: const TextStyle(
                                 fontSize: 10.5,
                                 color: Color.fromARGB(255, 0, 0, 0)),

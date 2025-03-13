@@ -31,6 +31,15 @@ class FlashSale extends StatelessWidget {
       "discount": "30%",
       "sold": "127"
     },
+    {
+      "image": "assets/images/product.jpg",
+      "brand": "MAYBELLINE",
+      "name": "Son Lì Maybelline Mịn Môi Siêu Nhẹ 1299 Đỏ Cam Đất 1.7g",
+      "price": "130.000đ",
+      "original_price": "149.000đ",
+      "discount": "30%",
+      "sold": "127"
+    },
   ];
 
   @override

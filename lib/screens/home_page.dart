@@ -13,25 +13,24 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor:
-          Color.fromARGB(255, 237, 237, 237), // Đặt nền trắng cho toàn bộ trang
+          Color.fromARGB(255, 255, 255, 255), // Đặt nền trắng cho toàn bộ trang
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 30), // Khoảng cách
+
             SearchBarWidget(), // Thanh tìm kiếm
-            SizedBox(height: 20), // Khoảng cách
+            SizedBox(height: 5), // Khoảng cách
             BannerSlider(), // Slider có indicator
-            SizedBox(height: 20),
+            SizedBox(height: 5),
             CategoryList(), // Danh mục sản phẩm
-            SizedBox(height: 20),
+            SizedBox(height: 5),
             FlashSale(), // Flash Sale
-            SizedBox(height: 20),
+            SizedBox(height: 5),
             BestSeller(), // Best Seller
-            SizedBox(height: 20),
-            // ProductSection(
-            //   title: "Sản phẩm bán chạy",
-            // ), // Danh sách sản phẩm bán chạy
-            // SizedBox(height: 20),
-            // ProductSection(title: "Gợi ý hôm nay"), // Gợi ý sản phẩm hôm nay
+            SizedBox(height: 5),
+            ProductSection(), // Product  Section
+            SizedBox(height: 5),
           ],
         ),
       ),
