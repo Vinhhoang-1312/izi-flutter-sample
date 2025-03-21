@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../widgets/search_bar.dart';
-import '../widgets/category_list.dart';
-import '../widgets/flash_sale.dart';
-import '../widgets/product_section.dart';
-import '../widgets/banner_slider.dart';
-import '../widgets/best_seller.dart';
+import '../widgets/home_widgets/search_bar.dart';
+import '../widgets/home_widgets/category_list.dart';
+import '../widgets/home_widgets/flash_sale.dart';
+import '../widgets/home_widgets/product_section.dart';
+import '../widgets/home_widgets/banner_slider.dart';
+import '../widgets/home_widgets/best_seller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

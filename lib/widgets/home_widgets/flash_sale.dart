@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class FlashSale extends StatelessWidget {
   const FlashSale({super.key});
 
-  final List<Map<String, String>> flashSaleProducts = const [
+  final List<Map<String, dynamic>> flashSaleProducts = const [
     {
       "image": "assets/images/product.jpg",
       "brand": "MAYBELINE",
@@ -11,7 +11,8 @@ class FlashSale extends StatelessWidget {
       "price": "130.000đ",
       "original_price": "149.000đ",
       "discount": "30%",
-      "sold": "127"
+      "sold": 127,
+      "total": 500,
     },
     {
       "image": "assets/images/product.jpg",
@@ -20,7 +21,8 @@ class FlashSale extends StatelessWidget {
       "price": "130.000đ",
       "original_price": "149.000đ",
       "discount": "30%",
-      "sold": "127"
+      "sold": 300,
+      "total": 500,
     },
     {
       "image": "assets/images/product.jpg",
@@ -29,7 +31,8 @@ class FlashSale extends StatelessWidget {
       "price": "130.000đ",
       "original_price": "149.000đ",
       "discount": "30%",
-      "sold": "127"
+      "sold": 127,
+      "total": 500,
     },
     {
       "image": "assets/images/product.jpg",
@@ -38,7 +41,8 @@ class FlashSale extends StatelessWidget {
       "price": "130.000đ",
       "original_price": "149.000đ",
       "discount": "30%",
-      "sold": "127"
+      "sold": 127,
+      "total": 500,
     },
   ];
 
@@ -106,6 +110,11 @@ class FlashSale extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: flashSaleProducts.length,
               itemBuilder: (context, index) {
+                final product = flashSaleProducts[index];
+                final int sold = product['sold'];
+                final int total = product['total'];
+                final double progress = sold / total;
+
                 return Container(
                   width: 160,
                   margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -130,7 +139,7 @@ class FlashSale extends StatelessWidget {
                         children: [
                           Image.asset(
                             // Hiển thị hình ảnh từ gói tài sản.
-                            flashSaleProducts[index]["image"]!,
+                            product["image"]!,
                             width: 140,
                             height: 140,
                             fit: BoxFit
@@ -164,19 +173,10 @@ class FlashSale extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 5),
-                      // Text(
-                      //   flashSaleProducts[index]["brand"]!,
-                      //   textAlign: TextAlign.center,
-                      //   style: const TextStyle(
-                      //     fontSize: 12,
-                      //     fontWeight: FontWeight.bold,
-                      //     color: Color(0xFF259329),
-                      //   ),
-                      // ),
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          flashSaleProducts[index]["brand"]!,
+                          product["brand"]!,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 12,
@@ -186,7 +186,7 @@ class FlashSale extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        flashSaleProducts[index]["name"]!,
+                        product["name"]!,
                         textAlign: TextAlign.center,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -199,7 +199,7 @@ class FlashSale extends StatelessWidget {
                             .spaceBetween, // Căn giữa theo chiều ngang
                         children: [
                           Text(
-                            flashSaleProducts[index]["price"]!,
+                            product["price"]!,
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.red,
@@ -228,7 +228,7 @@ class FlashSale extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        flashSaleProducts[index]["original_price"]!,
+                        product["original_price"]!,
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
@@ -236,11 +236,53 @@ class FlashSale extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        "Đã bán ${flashSaleProducts[index]["sold"]}",
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
+                      // Text(
+                      //   "Đã bán $sold",
+                      //   style: const TextStyle(
+                      //     fontSize: 12,
+                      //     color: Colors.grey,
+                      //   ),
+                      // ),
+                      Container(
+                        height: 20, // Tăng chiều cao để nhìn rõ hơn
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(
+                              255, 243, 240, 240), // Nền trắng
+                          borderRadius:
+                              BorderRadius.circular(10), // Bo góc ngoài
+                          // border: Border.all(
+                          //     color: Colors.grey.shade300), // Viền nhẹ
+                        ),
+                        child: Stack(
+                          children: [
+                            // Thanh tiến trình màu xanh lá
+                            LayoutBuilder(
+                              builder: (context, constraints) {
+                                double progressWidth =
+                                    constraints.maxWidth * progress;
+                                return Container(
+                                  width: progressWidth,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        const Color(0xFF72A834), // Màu xanh lá
+                                    borderRadius:
+                                        BorderRadius.circular(10), // Bo góc
+                                  ),
+                                );
+                              },
+                            ),
+                            // Chữ "Đã bán xxx" ở giữa
+                            Center(
+                              child: Text(
+                                "Đã bán $sold",
+                                style: const TextStyle(
+                                  fontSize: 14, // Chữ to hơn
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black, // Màu chữ
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart'; // Import for debugPaintSizeEnabled
 import 'screens/login_screen.dart'; // Import màn hình đăng nhập
 import 'screens/home_screen.dart'; // Import màn hình trang chủ
 import 'screens/cart_screen.dart'; // Import màn hình giỏ hàng
+import 'screens/order_screen.dart'; // Import màn hình đơn hàng
+import 'screens/account_screen.dart'; // Import màn hình đơn hàng
+import 'screens/createOrder_screen.dart'; // Import màn hình đơn hàng
+import 'screens/screen.dart'; // Import màn hình đơn hàng
 
 void main() {
-  runApp(MyApp());
+  // Enable debug paint
+  debugPaintSizeEnabled = false; // Hiển thị khung layout
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,13 +21,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Roboto',
+      ),
       debugShowCheckedModeBanner:
-          false, //Tắt(banner) "DEBUG" màu đỏ ở góc trên bên phải.
-      home: LoginScreen(),
+          false, // Tắt(banner) "DEBUG" màu đỏ ở góc trên bên phải.
+      home: NavigationScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
-        '/cart': (context) => CartScreen(),
+        '/cart': (context) => const CartScreen(),
+        '/order': (context) => const OrderScreen(), // Add order route
+        '/account': (context) => const AccountScreen(), // Add order route
+        '/createOrder': (context) =>
+            const CreateOrderScreen(), // Add order route
       },
     );
   }

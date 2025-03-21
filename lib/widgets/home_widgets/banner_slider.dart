@@ -29,6 +29,8 @@ class _BannerSliderState extends State<BannerSlider> {
           height: 200,
           child: PageView.builder(
             controller: _pageController,
+            clipBehavior: Clip.none, // Tránh cắt ảnh
+
             itemCount: urlImages.length,
             onPageChanged: (index) {
               setState(() {

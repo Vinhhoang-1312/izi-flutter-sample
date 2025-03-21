@@ -22,7 +22,7 @@ class _CategoryListState extends State<CategoryList> {
     },
     {"image": "assets/images/womanbag.jpg", "name": "Woman Bag"},
     {"image": "assets/images/manshop.jpg", "name": "Man Shop"},
-    {"image": "assets/images/shoes.jpg", "name": "Shoes"},
+    {"image": "assets/images/manshop.jpg", "name": "Shoes"},
   ];
 
   @override

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import '../widgets/bottom_navbar.dart'; // Import BottomNavBar
+import 'cart_screen.dart'; // Import màn hình giỏ hàng
+import 'order_screen.dart'; // Import màn hình đơn hàng
+import 'home_page.dart'; // Import trang chủ
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  int cartItemCount = 5; // Số lượng sản phẩm trong giỏ hàng (ví dụ)
 
   late final List<Widget> _pages;
 
@@ -18,8 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _pages = [
       const HomePage(),
-      const Center(child: Text("Phòng ngủ")),
-      const Center(child: Text("Giỏ hàng")),
+      const OrderScreen(), // Chuyển sang màn hình đơn hàng
+      const CartScreen(), // Chuyển sang màn hình giỏ hàng
       const Center(child: Text("Tài khoản")),
     ];
   }
@@ -34,23 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Trang chủ"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bedroom_parent),
-            label: "Phòng ngủ",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: "Giỏ hàng",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Tài khoản"),
-        ],
+      bottomNavigationBar: BottomNavBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
+        cartItemCount: cartItemCount, // Truyền số lượng giỏ hàng
       ),
     );
   }

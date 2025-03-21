@@ -158,12 +158,32 @@ class ProductCard extends StatelessWidget {
           const SizedBox(height: 4),
           Row(
             children: [
-              const Icon(Icons.star, color: Colors.amber, size: 14),
-              const SizedBox(width: 4),
-              Text(
-                product["rating"]!,
-                style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              Container(
+                width: 45,
+                height: 20,
+                decoration: BoxDecoration(
+                  color: Colors.yellow.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Colors.yellow, // Màu viền
+                    width: 1, // Độ dày viền
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                      size: 14,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      product["rating"]!,
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(width: 8),
               Text(
