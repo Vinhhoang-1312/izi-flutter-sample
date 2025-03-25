@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart'; // Import for debugPaintSizeEnabled
+import 'package:get/get.dart';
 import 'screens/login_screen.dart'; // Import màn hình đăng nhập
 import 'screens/register_screen.dart'; // Import màn hình đăng nhập
 import 'screens/home_screen.dart'; // Import màn hình trang chủ
@@ -10,11 +11,18 @@ import 'screens/createOrder_screen.dart'; // Import màn hình đơn hàng
 import 'screens/screen.dart'; // Import màn hình đơn hàng
 import 'package:get_storage/get_storage.dart';
 import './services/auth_service.dart';
+import './controllers/auth_controller.dart'; // Import AuthController
+import './controllers/product.dart';
+import './controllers/cart_controller.dart'; // Import CartController
 
 void main() async {
-  await GetStorage.init();
-  // Enable debug paint
-  debugPaintSizeEnabled = false; // Hiển thị khung layout
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init(); // Khởi tạo GetStorage trước khi sử dụng
+  Get.put(AuthService()); // 🛠 Đăng ký AuthService toàn cục
+  Get.put(AuthController()); // Đăng ký AuthController toàn cục
+  Get.put(ProductController()); // 🛠 Đăng ký ProductController nếu cần
+  Get.put(CartController()); // 🛠 Đăng ký CartController toàn cục
+
   runApp(const MyApp());
 }
 
@@ -23,27 +31,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthService authService = AuthService();
+    AuthService authService = Get.find<AuthService>(); // Lấy AuthService
 
-    return MaterialApp(
+    return GetMaterialApp(
+      // 🛠 Đổi từ MaterialApp sang GetMaterialApp
       theme: ThemeData(
         fontFamily: 'Roboto',
       ),
-      debugShowCheckedModeBanner:
-          false, // Tắt(banner) "DEBUG" màu đỏ ở góc trên bên phải.
+      debugShowCheckedModeBanner: false,
       initialRoute: authService.isLoggedIn() ? '/home' : '/login',
-
-      home: const LoginScreen(),
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/cart': (context) => const CartScreen(),
-        '/order': (context) => const OrderScreen(), // Add order route
-        '/account': (context) => const AccountScreen(), // Add order route
-        '/register': (context) => const RegisterScreen(), // Add order route
-        '/createOrder': (context) =>
-            const CreateOrderScreen(), // Add order route
-      },
+      getPages: [
+        GetPage(name: '/login', page: () => const LoginScreen()),
+        GetPage(name: '/home', page: () => const HomeScreen()),
+        GetPage(name: '/cart', page: () => const CartScreen()),
+        GetPage(name: '/order', page: () => const OrderScreen()),
+        GetPage(name: '/account', page: () => const AccountScreen()),
+        GetPage(name: '/register', page: () => const RegisterScreen()),
+        GetPage(name: '/createOrder', page: () => const CreateOrderScreen()),
+      ],
     );
   }
 }

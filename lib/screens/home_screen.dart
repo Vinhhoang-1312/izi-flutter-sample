@@ -6,6 +6,7 @@ import 'cart_screen.dart';
 import 'order_screen.dart';
 import 'home_page.dart';
 import 'account_screen.dart';
+import 'login_screen.dart'; // Import màn hình đăng nhập
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,12 +27,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Kiểm tra và gán userId
+    final String userId = authController.userId;
+    if (userId.isEmpty) {
+      Get.snackbar("Lỗi", "Không tìm thấy userId. Vui lòng đăng nhập lại.");
+      Future.delayed(const Duration(seconds: 2), () {
+        Get.offAll(() => const LoginScreen()); // Điều hướng về trang đăng nhập
+      });
+      return;
+    }
+
     _pages = [
       HomePage(),
-      // const OrderScreen(),
-      CartScreen(
-          userId:
-              authController.userId ?? ""), // Truyền userId từ AuthController
+      const OrderScreen(),
+      CartScreen(userId: userId), // Truyền userId hợp lệ
       const AccountScreen(),
     ];
   }

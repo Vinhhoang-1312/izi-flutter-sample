@@ -3,8 +3,10 @@ import 'package:dio/dio.dart';
 import 'dart:math'; // Import thư viện để random
 import '../services/api_service.dart';
 import '../models/product.dart';
+import '../services/auth_service.dart';
 
 class ProductController extends GetxController {
+  late AuthService authService;
   var productList = [].obs; // Danh sách sản phẩm
   var isLoading = false.obs; // Trạng thái tải dữ liệu
   // var cart = <Product>[].obs; // 🔥 Giỏ hàng lưu danh sách sản phẩm

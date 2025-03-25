@@ -23,8 +23,8 @@ class NavigationScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildNavButton(context, "Section 1", LoginScreen()),
-            buildNavButton(context, "Section 2",
-                CartScreen(userId: userId)), // Truyền userId
+            // buildNavButton(context, "Section 2",
+            //     CartScreen(userId: userId)), // Truyền userId
             buildNavButton(
                 context, "Section 3", CreateOrderScreen()), // Truyền userId
             buildNavButton(context, "Section 4", AccountScreen()),

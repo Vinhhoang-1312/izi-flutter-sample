@@ -2,8 +2,13 @@ import 'package:get/get.dart';
 
 class CartController extends GetxController {
   var userCarts = <String, List<Map<String, dynamic>>>{}.obs;
+  final RxList<Map<String, dynamic>> cartItems = <Map<String, dynamic>>[].obs;
 
   List<Map<String, dynamic>> getCart(String userId) {
+    if (userId.isEmpty) {
+      Get.snackbar("Lỗi", "userId không hợp lệ. Vui lòng đăng nhập lại.");
+      return [];
+    }
     return userCarts[userId] ?? [];
   }
 
@@ -15,6 +20,11 @@ class CartController extends GetxController {
   }
 
   void addToCart(String userId, Map<String, dynamic> product) {
+    if (userId.isEmpty) {
+      Get.snackbar("Lỗi", "userId không hợp lệ. Vui lòng đăng nhập lại.");
+      return;
+    }
+
     if (!userCarts.containsKey(userId)) {
       userCarts[userId] = [];
     }
@@ -34,13 +44,11 @@ class CartController extends GetxController {
     if (!userCarts.containsKey(userId) || userCarts[userId] == null) return;
 
     var cart = userCarts[userId]!;
-    int index = cart.indexWhere((item) =>
-        item['id'].toString() ==
-        productId.toString()); // Ép kiểu String để tránh lỗi
+    int index = cart
+        .indexWhere((item) => item['id'].toString() == productId.toString());
 
     if (index >= 0) {
-      int currentQuantity =
-          (cart[index]['quantity'] as num).toInt(); // Đảm bảo kiểu dữ liệu
+      int currentQuantity = (cart[index]['quantity'] as num).toInt();
       int newQuantity = (currentQuantity + change).clamp(1, 999);
 
       cart[index]['quantity'] = newQuantity;
@@ -71,4 +79,11 @@ class CartController extends GetxController {
       userCarts.refresh();
     }
   }
+
+  void addItems(List<Map<String, dynamic>> items) {
+    cartItems.assignAll(items);
+  }
+
+  List<Map<String, dynamic>> get selectedItems =>
+      cartItems.where((item) => item['selected'] == true).toList();
 }

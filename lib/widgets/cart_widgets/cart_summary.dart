@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Định dạng số tiền VNĐ
 import '../../controllers/order_controller.dart';
 import 'package:get/get.dart';
+import '../../controllers/cart_controller.dart';
+import '../../screens/order_screen.dart';
 
 class CartSummary extends StatefulWidget {
   final num totalPrice;
@@ -30,6 +32,8 @@ class _CartSummaryState extends State<CartSummary> {
 
   @override
   Widget build(BuildContext context) {
+    final CartController cartController = Get.find<CartController>();
+
     return Container(
       padding: const EdgeInsets.symmetric(
           vertical: 16, horizontal: 16), // Remove horizontal padding
@@ -132,14 +136,11 @@ class _CartSummaryState extends State<CartSummary> {
                   const SizedBox(width: 5), // Điều chỉnh khoảng cách
                   ElevatedButton(
                     onPressed: () {
-                      // ✅ Kiểm tra giá trị trước khi đặt hàng
-                      print("🔍 Kiểm tra dữ liệu trước khi đặt hàng:");
-                      print("📌 User ID: ${widget.userId}");
-                      print("🛒 Cart Items: ${widget.cartItems}");
-                      final orderController =
-                          Get.find<OrderController>(); // Lấy OrderController
-                      orderController.placeOrder(
-                          widget.userId, widget.cartItems);
+                      // Push selected items to CartController
+                      cartController.addItems(cartController.selectedItems);
+
+                      // Navigate to OrderScreen
+                      Get.to(() => const OrderScreen());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFF712D),
