@@ -20,6 +20,7 @@ class OrderItem extends StatelessWidget {
     final currencyFormat = NumberFormat("#,###", "vi_VN"); // Định dạng số tiền
 
     return Padding(
+      key: ValueKey(item['id']), // Đảm bảo key duy nhất
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

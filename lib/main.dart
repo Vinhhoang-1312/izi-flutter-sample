@@ -18,8 +18,8 @@ import './controllers/cart_controller.dart'; // Import CartController
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init(); // Khởi tạo GetStorage trước khi sử dụng
-  Get.put(AuthService()); // 🛠 Đăng ký AuthService toàn cục
   Get.put(AuthController()); // Đăng ký AuthController toàn cục
+  Get.put(AuthService()); // 🛠 Đăng ký AuthService toàn cục
   Get.put(ProductController()); // 🛠 Đăng ký ProductController nếu cần
   Get.put(CartController()); // 🛠 Đăng ký CartController toàn cục
 
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/login', page: () => const LoginScreen()),
         GetPage(name: '/home', page: () => const HomeScreen()),
-        GetPage(name: '/cart', page: () => const CartScreen()),
+        // GetPage(name: '/cart', page: () => const CartScreen()),
         GetPage(name: '/order', page: () => const OrderScreen()),
         GetPage(name: '/account', page: () => const AccountScreen()),
         GetPage(name: '/register', page: () => const RegisterScreen()),

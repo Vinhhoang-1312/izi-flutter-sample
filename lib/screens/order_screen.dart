@@ -29,6 +29,8 @@ class OrderScreen extends StatelessWidget {
         itemCount: cartController.cartItems.length,
         itemBuilder: (context, index) {
           return OrderItem(
+            key: ValueKey(
+                cartController.cartItems[index]['id']), // Đảm bảo key duy nhất
             item: cartController.cartItems[index],
             onUpdateQuantity: (change) {},
             onRemove: () {},

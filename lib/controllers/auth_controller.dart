@@ -10,21 +10,30 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // Khôi phục trạng thái đăng nhập và userId từ GetStorage
     isLoggedIn.value = _storage.hasData("user");
     if (isLoggedIn.value) {
       final userData = _storage.read("user");
-      userId = userData["id"].toString(); // Khôi phục userId từ GetStorage
+      userId = userData?["id"]?.toString() ?? ""; // Khôi phục userId
     }
   }
 
-  void login(Map<String, dynamic> userData) {
-    _storage.write("user", userData);
-    isLoggedIn.value = true;
-    userId = userData["id"].toString(); // Gán userId khi đăng nhập thành công
-    update(); // Cập nhật trạng thái
+  void login(String username, String password) {
+    // Giả lập phản hồi API
+    if (username == "user1" && password == "password1") {
+      final userData = {"id": "1", "username": username};
+      _storage.write("user", userData); // Lưu thông tin người dùng
+      isLoggedIn.value = true;
+      userId = userData["id"]!; // Gán userId
+      update(); // Cập nhật trạng thái
+      Get.snackbar("Thành công", "Đăng nhập thành công!");
+    } else {
+      Get.snackbar("Lỗi", "Tài khoản hoặc mật khẩu không đúng.");
+    }
   }
 
   void logout() {
+    // Xóa thông tin người dùng khỏi GetStorage
     _storage.remove("user");
     isLoggedIn.value = false;
     userId = ""; // Xóa userId khi đăng xuất

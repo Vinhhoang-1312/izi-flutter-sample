@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 0; // Chỉ số của trang hiện tại
   int cartItemCount = 5; // Số lượng sản phẩm trong giỏ hàng
 
   final AuthController authController =
@@ -29,36 +29,50 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     // Kiểm tra và gán userId
-    final String userId = authController.userId;
-    if (userId.isEmpty) {
-      Get.snackbar("Lỗi", "Không tìm thấy userId. Vui lòng đăng nhập lại.");
-      Future.delayed(const Duration(seconds: 2), () {
-        Get.offAll(() => const LoginScreen()); // Điều hướng về trang đăng nhập
-      });
-      return;
-    }
+    final String? userId = authController.userId.isNotEmpty
+        ? authController.userId
+        : null; // Kiểm tra nếu userId rỗng
 
-    _pages = [
-      HomePage(),
-      const OrderScreen(),
-      CartScreen(userId: userId), // Truyền userId hợp lệ
-      const AccountScreen(),
-    ];
+    if (userId == null) {
+      // Điều hướng về trang đăng nhập nếu userId không hợp lệ
+      Future.delayed(Duration.zero, () {
+        Get.offAll(() => const LoginScreen());
+      });
+    } else {
+      // Khởi tạo _pages nếu userId hợp lệ
+      _pages = [
+        HomePage(),
+        const OrderScreen(),
+        CartScreen(userId: userId), // Truyền userId hợp lệ
+        const AccountScreen(),
+      ];
+    }
   }
 
+  // Định nghĩa phương thức _onItemTapped
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index; // Cập nhật chỉ số của trang hiện tại
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // Hiển thị màn hình tạm thời nếu _pages chưa được khởi tạo
+    if (!authController.isLoggedIn.value || authController.userId.isEmpty) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(), // Hiển thị vòng tròn chờ
+        ),
+      );
+    }
+
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body:
+          _pages[_selectedIndex], // Hiển thị trang tương ứng với _selectedIndex
       bottomNavigationBar: BottomNavBar(
         selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
+        onItemTapped: _onItemTapped, // Truyền phương thức _onItemTapped
         cartItemCount: cartItemCount, // Truyền số lượng giỏ hàng
       ),
     );

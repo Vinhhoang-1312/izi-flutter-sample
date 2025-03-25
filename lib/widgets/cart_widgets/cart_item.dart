@@ -69,7 +69,8 @@ class CartItem extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                item["image"],
+                item["thumbnail"] ??
+                    "https://via.placeholder.com/90", // Giá trị mặc định
                 width: 90,
                 height: 90,
                 fit: BoxFit.cover,
@@ -86,7 +87,7 @@ class CartItem extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        item["name"],
+                        item["name"] ?? "Tên sản phẩm", // Giá trị mặc định
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontWeight: FontWeight.bold),
@@ -121,7 +122,7 @@ class CartItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${currencyFormat.format(item["price"])}đ", // Định dạng giá
+                          "${currencyFormat.format(item["price"] ?? 0)}đ", // Giá trị mặc định
                           style: const TextStyle(
                             color: Color(0xFFFF712D),
                             fontWeight: FontWeight.bold,
@@ -177,7 +178,7 @@ class CartItem extends StatelessWidget {
                                 color: Color(0xFFA4A2A2), width: 0.7),
                           ),
                           child: Text(
-                            "${item["quantity"]}",
+                            "${item["quantity"] ?? 1}", // Giá trị mặc định
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,

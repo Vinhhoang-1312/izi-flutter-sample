@@ -7,7 +7,9 @@ import '../controllers/cart_controller.dart'; // Import CartController
 import 'package:get/get.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+  final String userId; // Nhận userId từ HomeScreen
+
+  const CartScreen({super.key, required this.userId});
 
   @override
   _CartScreenState createState() => _CartScreenState();
@@ -15,21 +17,20 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final CartController cartController = Get.find<CartController>();
-  final String userId = "user123"; // Example user ID
 
   bool isAllSelected = false;
 
   void updateQuantity(int index, int change) {
     setState(() {
-      cartController.updateQuantity(
-          userId, cartController.getCart(userId)[index]['id'], change);
+      cartController.updateQuantity(widget.userId,
+          cartController.getCart(widget.userId)[index]['id'], change);
     });
   }
 
   void toggleSelectAll(bool? value) {
     setState(() {
       isAllSelected = value ?? false;
-      for (var item in cartController.getCart(userId)) {
+      for (var item in cartController.getCart(widget.userId)) {
         item['selected'] = isAllSelected;
       }
     });
@@ -38,10 +39,11 @@ class _CartScreenState extends State<CartScreen> {
 
   void toggleSelectItem(int index) {
     setState(() {
-      cartController.getCart(userId)[index]['selected'] =
-          !cartController.getCart(userId)[index]['selected'];
-      isAllSelected =
-          cartController.getCart(userId).every((item) => item['selected']);
+      cartController.getCart(widget.userId)[index]['selected'] =
+          !cartController.getCart(widget.userId)[index]['selected'];
+      isAllSelected = cartController
+          .getCart(widget.userId)
+          .every((item) => item['selected']);
     });
     cartController.userCarts.refresh();
   }
@@ -49,18 +51,18 @@ class _CartScreenState extends State<CartScreen> {
   void removeItem(int index) {
     setState(() {
       cartController.removeFromCart(
-          userId, cartController.getCart(userId)[index]['id']);
+          widget.userId, cartController.getCart(widget.userId)[index]['id']);
     });
   }
 
   void clearCart() {
     setState(() {
-      cartController.clearCart(userId);
+      cartController.clearCart(widget.userId);
     });
   }
 
   void navigateToPayment() {
-    if (cartController.getSelectedItems(userId).isEmpty) {
+    if (cartController.getSelectedItems(widget.userId).isEmpty) {
       Get.snackbar(
           "Thông báo", "Vui lòng chọn ít nhất một sản phẩm để đặt hàng.");
       return;
@@ -74,7 +76,7 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cartItems = cartController.getCart(userId);
+    final cartItems = cartController.getCart(widget.userId);
 
     return Scaffold(
       appBar: AppBar(
@@ -105,6 +107,8 @@ class _CartScreenState extends State<CartScreen> {
                 itemCount: cartItems.length,
                 itemBuilder: (context, index) {
                   return CartItem(
+                    key: ValueKey(
+                        cartItems[index]['id']), // Đảm bảo key duy nhất
                     item: cartItems[index],
                     onUpdateQuantity: (change) => updateQuantity(index, change),
                     onToggleSelect: () => toggleSelectItem(index),
@@ -123,9 +127,8 @@ class _CartScreenState extends State<CartScreen> {
               ),
               isAllSelected: isAllSelected,
               onSelectAll: toggleSelectAll,
-              onOrderPressed:
-                  navigateToPayment, // Ensure this callback is correct
-              userId: userId,
+              onOrderPressed: navigateToPayment,
+              userId: widget.userId,
               cartItems: cartItems,
             ),
           ],
