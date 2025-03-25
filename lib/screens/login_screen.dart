@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,7 +10,48 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  bool _isLoading = false; // Biến trạng thái loading
+
   bool _isObscure = true; // Biến điều khiển ẩn/hiện mật khẩu
+// Hàm xử lý đăng nhập
+  void _login() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String phone = _phoneController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (phone.isEmpty || password.isEmpty) {
+      _showMessage("Vui lòng nhập đầy đủ thông tin!");
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    var user = await _authService.login(phone, password);
+    if (user != null) {
+      Navigator.pushReplacementNamed(
+          context, "/home"); // Chuyển sang trang home
+    } else {
+      _showMessage("Sai tài khoản hoặc mật khẩu!");
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+// Hàm hiển thị thông báo lỗi
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +128,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
                       // Ô nhập số điện thoại
                       TextField(
+                        controller: _phoneController,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(
                             Icons.phone,
                             color: Colors.green,
                           ),
+
                           hintText:
                               "Số điện thoại", // Hướng dẫn nhập số điện thoại
                           border: OutlineInputBorder(
@@ -104,6 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Ô nhập mật khẩu với nút ẩn/hiện mật khẩu
                       TextField(
                         obscureText: _isObscure, // Điều khiển hiển thị mật khẩu
+                        controller: _passwordController,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(
                             Icons.lock,
@@ -167,23 +213,30 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: double.infinity,
                         height: 45,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context,
-                                '/home'); // Chuyển đến màn hình Home khi đăng nhập
-                          },
+                          onPressed: _isLoading
+                              ? null
+                              : () async {
+                                  _login();
+                                },
+
+                          // onPressed: () {
+                          //   Navigator.pushNamed(context,
+                          //       '/home'); // Chuyển đến màn hình Home khi đăng nhập
+                          // },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: const Text(
-                            "Đăng nhập",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
+                          child: _isLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : const Text(
+                                  "Đăng nhập",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -236,7 +289,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 const Text("Bạn chưa có tài khoản?"),
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pushNamed(context,
+                                        '/register'); // Chuyển đến màn hình Home khi đăng nhập
+                                  },
                                   child: const Text(
                                     "Tạo ngay.",
                                     style: TextStyle(

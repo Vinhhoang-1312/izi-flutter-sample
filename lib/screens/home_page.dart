@@ -5,10 +5,13 @@ import '../widgets/home_widgets/flash_sale.dart';
 import '../widgets/home_widgets/product_section.dart';
 import '../widgets/home_widgets/banner_slider.dart';
 import '../widgets/home_widgets/best_seller.dart';
+import 'package:get/get.dart';
+import '../controller/product.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
+  HomePage({super.key}) {
+    Get.put(ProductController()); // Đảm bảo chỉ khởi tạo 1 lần
+  }
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -18,7 +21,6 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 30), // Khoảng cách
-
             SearchBarWidget(), // Thanh tìm kiếm
             SizedBox(height: 5), // Khoảng cách
             BannerSlider(), // Slider có indicator

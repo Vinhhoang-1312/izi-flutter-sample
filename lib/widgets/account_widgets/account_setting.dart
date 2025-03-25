@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/screens/screen.dart';
 // import 'package:iconsax/iconsax.dart'; // Thư viện icon
 import '../../screens/infoAccount_screen.dart';
+import '../../services/auth_service.dart';
 
 class AccountSetting extends StatelessWidget {
   const AccountSetting({super.key});
@@ -35,7 +36,8 @@ class AccountSetting extends StatelessWidget {
               _buildListTile(Icons.person, "Thông tin tài khoản", context),
               _buildListTile(Icons.inventory_2, "Trả hàng nhập kho", context),
               _buildListTile(Icons.lock, "Thay đổi mật khẩu", context),
-              _buildListTile(Icons.exit_to_app, "Đăng xuất", context),
+              _buildLogoutTile(Icons.exit_to_app, "Đăng xuất",
+                  context), // Tạo riêng nút logout
             ],
           ),
         ),
@@ -60,13 +62,6 @@ class AccountSetting extends StatelessWidget {
                     builder: (context) => InfoAccountScreen(),
                   )); // Mở trang thông tin tài khoản
             }
-            if (title == "Đăng xuất") {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NavigationScreen(),
-                  )); // Mở trang thông tin tài khoản
-            }
           },
         ),
         Divider(
@@ -76,4 +71,48 @@ class AccountSetting extends StatelessWidget {
       ],
     );
   }
+}
+
+Widget _buildLogoutTile(IconData icon, String title, BuildContext context) {
+  return Column(
+    children: [
+      ListTile(
+        leading: Icon(icon, color: Colors.red), // Màu đỏ cho nút logout
+        title: Text(title, style: TextStyle(color: Colors.red)),
+        trailing: Icon(Icons.chevron_right, color: Colors.red),
+        onTap: () async {
+          bool confirmLogout = await _showLogoutDialog(context);
+          if (confirmLogout) {
+            AuthService().logout(); // Xóa user khỏi GetStorage
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => NavigationScreen()),
+            );
+          }
+        },
+      ),
+      Divider(height: 1, thickness: 1, color: Colors.grey.shade300),
+    ],
+  );
+}
+
+Future<bool> _showLogoutDialog(BuildContext context) async {
+  return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Xác nhận"),
+          content: Text("Bạn có chắc chắn muốn đăng xuất không?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text("Hủy"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text("Đăng xuất", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        ),
+      ) ??
+      false;
 }

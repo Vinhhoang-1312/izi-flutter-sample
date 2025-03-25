@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/account_widgets/account_category.dart';
 import '../widgets/account_widgets/account_setting.dart';
 import '../widgets/account_widgets/account_topbar.dart';
+import '../../services/auth_service.dart'; // Import AuthService
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});

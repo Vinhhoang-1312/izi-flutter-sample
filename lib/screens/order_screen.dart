@@ -174,23 +174,34 @@ class _OrderScreenState extends State<OrderScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Wrap(
+                                  spacing:
+                                      8, // Khoảng cách giữa các phần tử trong dòng
+                                  runSpacing: 4, // Khoảng cách giữa các dòng
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 4),
                                       decoration: BoxDecoration(
                                         color: Colors.red.withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: const Row(
+                                        mainAxisSize: MainAxisSize
+                                            .min, // Để nội dung không chiếm hết chiều ngang
                                         children: [
-                                          Text(
-                                            "Vui lòng điền thông tin nhận hàng",
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 12),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                // right: 5,
+                                                left: 8,
+                                                top: 6,
+                                                bottom: 0), // Padding cho chữ
+                                            child: Text(
+                                              "Vui lòng điền thông tin nhận hàng",
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 12),
+                                              overflow: TextOverflow
+                                                  .ellipsis, // Chống vỡ chữ
+                                            ),
                                           ),
                                           SizedBox(width: 4),
                                           Icon(Icons.warning,
@@ -198,19 +209,15 @@ class _OrderScreenState extends State<OrderScreen> {
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(width: 12),
                                     TextButton(
-                                      onPressed: () {
-                                        // Thêm logic thay đổi địa chỉ
-                                      },
+                                      onPressed: () {},
                                       child: const Row(
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text(
-                                            "Thay đổi",
-                                            style: TextStyle(
-                                                color: Colors.blue,
-                                                fontSize: 12),
-                                          ),
+                                          Text("Thay đổi",
+                                              style: TextStyle(
+                                                  color: Colors.blue,
+                                                  fontSize: 12)),
                                           SizedBox(width: 4),
                                           Icon(Icons.edit,
                                               color: Colors.grey, size: 16),

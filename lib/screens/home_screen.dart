@@ -3,6 +3,7 @@ import '../widgets/bottom_navbar.dart'; // Import BottomNavBar
 import 'cart_screen.dart'; // Import màn hình giỏ hàng
 import 'order_screen.dart'; // Import màn hình đơn hàng
 import 'home_page.dart'; // Import trang chủ
+import 'account_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,10 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _pages = [
-      const HomePage(),
+      HomePage(),
       const OrderScreen(), // Chuyển sang màn hình đơn hàng
       const CartScreen(), // Chuyển sang màn hình giỏ hàng
-      const Center(child: Text("Tài khoản")),
+      const AccountScreen(),
     ];
   }
 

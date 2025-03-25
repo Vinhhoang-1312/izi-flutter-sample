@@ -27,9 +27,27 @@ class _WalletDepositScreenState extends State<WalletDepositScreen> {
               _buildTabContainer("Nạp tiền", true, Icons.login),
 
               const Divider(
-                thickness: 1,
-                color: Colors.grey,
+                thickness: 2,
+                color: Color.fromARGB(255, 86, 86, 86),
               ),
+              // Padding(
+              //   padding: EdgeInsets.all(8.0), // Khoảng cách đều 4 phía
+              //   child: Divider(
+              //     thickness: 2,
+              //     color: Color.fromARGB(255, 86, 86, 86),
+              //   ),
+              // ),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10), // Khoảng cách phía dưới
+                child: SizedBox(
+                  height: 30, // Chiều cao của đường kẻ
+                  child: VerticalDivider(
+                    thickness: 1,
+                    color: Color.fromARGB(255, 86, 86, 86),
+                  ),
+                ),
+              ),
+
               _buildTabContainer("Rút tiền", false, Icons.logout),
             ],
           ),
