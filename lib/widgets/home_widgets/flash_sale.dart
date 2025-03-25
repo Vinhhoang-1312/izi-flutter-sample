@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/product.dart'; // Import ProductController
+import '../../controllers/product.dart'; // Import ProductController
 
 class FlashSale extends StatefulWidget {
   const FlashSale({super.key});

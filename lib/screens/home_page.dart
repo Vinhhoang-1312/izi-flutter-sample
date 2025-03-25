@@ -6,7 +6,7 @@ import '../widgets/home_widgets/product_section.dart';
 import '../widgets/home_widgets/banner_slider.dart';
 import '../widgets/home_widgets/best_seller.dart';
 import 'package:get/get.dart';
-import '../controller/product.dart';
+import '../controllers/product.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key}) {

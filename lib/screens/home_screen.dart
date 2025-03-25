@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '../widgets/bottom_navbar.dart'; // Import BottomNavBar
-import 'cart_screen.dart'; // Import màn hình giỏ hàng
-import 'order_screen.dart'; // Import màn hình đơn hàng
-import 'home_page.dart'; // Import trang chủ
+import 'package:get/get.dart';
+import '../controllers/auth_controller.dart';
+import '../widgets/bottom_navbar.dart';
+import 'cart_screen.dart';
+import 'order_screen.dart';
+import 'home_page.dart';
 import 'account_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,7 +16,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  int cartItemCount = 5; // Số lượng sản phẩm trong giỏ hàng (ví dụ)
+  int cartItemCount = 5; // Số lượng sản phẩm trong giỏ hàng
+
+  final AuthController authController =
+      Get.find<AuthController>(); // Lấy AuthController
 
   late final List<Widget> _pages;
 
@@ -23,8 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _pages = [
       HomePage(),
-      const OrderScreen(), // Chuyển sang màn hình đơn hàng
-      const CartScreen(), // Chuyển sang màn hình giỏ hàng
+      // const OrderScreen(),
+      CartScreen(
+          userId:
+              authController.userId ?? ""), // Truyền userId từ AuthController
       const AccountScreen(),
     ];
   }

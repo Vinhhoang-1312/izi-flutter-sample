@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Định dạng số tiền VNĐ
+import '../../controllers/order_controller.dart';
+import 'package:get/get.dart';
 
 class CartSummary extends StatefulWidget {
-  final int totalPrice;
+  final num totalPrice;
   final bool isAllSelected;
   final Function(bool?) onSelectAll; // Corrected type
   final VoidCallback onOrderPressed; // Thuộc tính mới
+  final String userId; // ➕ Thêm userId
+  final List<Map<String, dynamic>> cartItems; // ➕ Thêm cartItems
 
   const CartSummary({
     super.key,
@@ -13,6 +17,8 @@ class CartSummary extends StatefulWidget {
     required this.isAllSelected,
     required this.onSelectAll,
     required this.onOrderPressed, // Thuộc tính mới
+    required this.userId, // ➕ Nhận userId
+    required this.cartItems, // ➕ Nhận danh sách sản phẩm
   });
 
   @override
@@ -119,19 +125,28 @@ class _CartSummaryState extends State<CartSummary> {
               Row(
                 children: [
                   Text(
-                    "${currencyFormat.format(widget.totalPrice)} đ",
+                    "${currencyFormat.format(widget.totalPrice.round())} đ",
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   const SizedBox(width: 5), // Điều chỉnh khoảng cách
                   ElevatedButton(
-                    onPressed: widget.onOrderPressed, // Use new property
+                    onPressed: () {
+                      // ✅ Kiểm tra giá trị trước khi đặt hàng
+                      print("🔍 Kiểm tra dữ liệu trước khi đặt hàng:");
+                      print("📌 User ID: ${widget.userId}");
+                      print("🛒 Cart Items: ${widget.cartItems}");
+                      final orderController =
+                          Get.find<OrderController>(); // Lấy OrderController
+                      orderController.placeOrder(
+                          widget.userId, widget.cartItems);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFF712D),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      minimumSize: const Size(137, 44), // Adjust size as needed
+                      minimumSize: const Size(137, 44),
                     ),
                     child: const Text("Đặt hàng",
                         style: TextStyle(fontSize: 16, color: Colors.white)),

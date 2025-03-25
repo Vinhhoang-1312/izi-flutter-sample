@@ -34,8 +34,11 @@ class AuthService {
         'https://dummyjson.com/users/add',
         data: {
           'firstName': name, // DummyJSON dùng firstName
+          'lastName': 'Test', // DummyJSON có thể yêu cầu lastName
           'username': phone, // DummyJSON yêu cầu username
           'password': password,
+          'email': '$phone@example.com', // DummyJSON có thể yêu cầu email
+          'gender': 'male', // Thêm giới tính (hoặc 'female' nếu cần)
         },
       );
 
@@ -45,13 +48,16 @@ class AuthService {
         return null;
       }
     } catch (e) {
+      print('Lỗi khi đăng ký: $e'); // In lỗi để kiểm tra
       return null;
     }
   }
 
   // Kiểm tra xem user đã đăng nhập chưa
   bool isLoggedIn() {
-    return _storage.hasData("user");
+    bool exists = _storage.hasData("user");
+    print("Kiểm tra trạng thái đăng nhập: $exists"); // Debug
+    return exists;
   }
 
   // Đăng xuất

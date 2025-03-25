@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/product.dart'; // Đường dẫn tới ProductController
+import '../../controllers/product.dart'; // Đường dẫn tới ProductController
+import 'package:get_storage/get_storage.dart'; // Import thư viện GetStorage
+import '../../screens/productDetail_screen.dart';
+import '../../controllers/auth_controller.dart';
 
 class ProductSection extends StatelessWidget {
   const ProductSection({super.key});
@@ -86,165 +89,191 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // // Hiển thị ảnh sản phẩm
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(10),
-          //   child: AspectRatio(
-          //     aspectRatio: 1, // Giữ tỷ lệ vuông cho ảnh
-          //     child: Image.network(
-          //       product["thumbnail"], // Lấy ảnh từ API
-          //       fit: BoxFit.cover,
-          //       width: double.infinity,
-          //     ),
-          //   ),
-          // ),
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  product["thumbnail"],
-                  width: double.infinity,
-                  height: 150,
-                  fit: BoxFit.cover,
-                ),
+    final GetStorage _storage = GetStorage(); // Lấy dữ liệu từ local storage
+    return GestureDetector(
+        onTap: () {
+          final AuthController authController =
+              Get.find<AuthController>(); // Tìm AuthController
+          String? userId =
+              authController.userId; // Lấy userId từ AuthController
+
+          if (userId == null) {
+            Get.snackbar(
+                "Thông báo", "Bạn cần đăng nhập để xem chi tiết sản phẩm!");
+            return;
+          }
+
+          print("Nhấn vào sản phẩm: ${product["title"]}, User ID: $userId");
+
+          Get.to(() =>
+              ProductDetailScreen(product: product, userId: userId.toString()));
+        },
+        child: Container(
+          // color: Colors.transparent, // Giúp GestureDetector nhận diện click
+
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            // color: Colors.white,
+            color: Colors.white, // Màu trong suốt nhưng không gây lỗi
+
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
               ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: ClipPath(
-                  clipper: ArrowClipper(),
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    color: Colors.red,
-                    child: Text(
-                      "-${product["discountPercentage"]}%",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // // Hiển thị ảnh sản phẩm
+              // ClipRRect(
+              //   borderRadius: BorderRadius.circular(10),
+              //   child: AspectRatio(
+              //     aspectRatio: 1, // Giữ tỷ lệ vuông cho ảnh
+              //     child: Image.network(
+              //       product["thumbnail"], // Lấy ảnh từ API
+              //       fit: BoxFit.cover,
+              //       width: double.infinity,
+              //     ),
+              //   ),
+              // ),
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      product["thumbnail"],
+                      width: double.infinity,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: ClipPath(
+                      clipper: ArrowClipper(),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        color: Colors.red,
+                        child: Text(
+                          "-${product["discountPercentage"]}%",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-          const SizedBox(height: 6),
+              const SizedBox(height: 6),
 
-          // Hiển thị tên sản phẩm
-          Text(
-            product["title"], // Lấy tên sản phẩm từ API
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 4),
+              // Hiển thị tên sản phẩm
+              Text(
+                product["title"], // Lấy tên sản phẩm từ API
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style:
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 4),
 
-          // Hiển thị giá sản phẩm
-          Text(
-            "${product["price"]}đ", // Lấy giá sản phẩm từ API
-            style: const TextStyle(
-                fontSize: 14, color: Colors.red, fontWeight: FontWeight.bold),
-          ),
+              // Hiển thị giá sản phẩm
+              Text(
+                "${product["price"]}đ", // Lấy giá sản phẩm từ API
+                style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold),
+              ),
 
-          // Hiển thị giảm giá
-          Text(
-            "${product["discountPercentage"]}% giảm giá", // Lấy giảm giá từ API
-            style: const TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
-                decoration: TextDecoration.lineThrough),
-          ),
-          const SizedBox(height: 4),
+              // Hiển thị giảm giá
+              Text(
+                "${product["discountPercentage"]}% giảm giá", // Lấy giảm giá từ API
+                style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                    decoration: TextDecoration.lineThrough),
+              ),
+              const SizedBox(height: 4),
 
-          // Hiển thị đánh giá và số lượng còn lại
-          Row(
-            children: [
-              Container(
-                width: 45,
-                height: 22,
-                decoration: BoxDecoration(
-                  color: Colors.yellow.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.yellow,
-                    width: 1,
+              // Hiển thị đánh giá và số lượng còn lại
+              Row(
+                children: [
+                  Container(
+                    width: 45,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.yellow,
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        // const Icon(
+                        //   Icons.star,
+                        //   color: Colors.amber,
+                        //   size: 14,
+                        // ),
+                        // const SizedBox(width: 4),
+                        // Text(
+                        //   "${product["rating"]}",
+                        //   style: const TextStyle(
+                        //     fontSize: 12,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
+                        Text(
+                          " ⭐ ${product["rating"].toStringAsFixed(1)} ",
+                          style: const TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                child: Row(
-                  children: [
-                    // const Icon(
-                    //   Icons.star,
-                    //   color: Colors.amber,
-                    //   size: 14,
-                    // ),
-                    // const SizedBox(width: 4),
-                    // Text(
-                    //   "${product["rating"]}",
-                    //   style: const TextStyle(
-                    //     fontSize: 12,
-                    //     fontWeight: FontWeight.bold,
-                    //   ),
-                    // ),
-                    Text(
-                      " ⭐ ${product["rating"].toStringAsFixed(1)} ",
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
+                  const SizedBox(width: 8),
+                  Text(
+                    "${product["sold"]} đã bán",
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 8),
-              Text(
-                "${product["sold"]} đã bán",
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.location_on,
+                    color: Colors.orange,
+                    size: 12,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    "${product["location"]} ",
+                    // bestSellerProducts[index]["location"]!,
+                    style: const TextStyle(
+                      fontSize: 10.5,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              const Icon(
-                Icons.location_on,
-                color: Colors.orange,
-                size: 12,
-              ),
-              const SizedBox(width: 4),
-              Text(
-                "${product["location"]} ",
-                // bestSellerProducts[index]["location"]!,
-                style: const TextStyle(
-                  fontSize: 10.5,
-                  color: Color.fromARGB(255, 0, 0, 0),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+        ));
   }
 }
 
