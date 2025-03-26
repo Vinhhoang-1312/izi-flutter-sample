@@ -4,19 +4,22 @@ import 'package:flutter_switch/flutter_switch.dart';
 
 class OrderSummary extends StatelessWidget {
   final List<Map<String, dynamic>> cartItems;
+  final num totalPrice;
+  final num discount;
+  final num finalPrice;
 
-  const OrderSummary({super.key, required this.cartItems});
+  const OrderSummary({
+    super.key,
+    required this.cartItems,
+    required this.totalPrice,
+    required this.discount,
+    required this.finalPrice,
+  });
 
   @override
   Widget build(BuildContext context) {
     final currencyFormat =
         NumberFormat("#,###", "vi_VN"); // Định dạng số tiền VNĐ
-    final totalPrice = cartItems.fold<int>(
-      0,
-      (sum, item) => item['selected']
-          ? sum + (item['price'] as int) * (item['quantity'] as int)
-          : sum,
-    );
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -166,14 +169,54 @@ class OrderSummary extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Tổng thanh toán",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              color: Color(0xFF677275)),
+                          "Tổng tiền hàng:",
+                          style: TextStyle(fontSize: 14, color: Colors.black),
                         ),
                         Text(
                           "${currencyFormat.format(totalPrice)} đ",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Giảm giá:",
+                          style: TextStyle(fontSize: 14, color: Colors.black),
+                        ),
+                        Text(
+                          "-${currencyFormat.format(discount)} đ",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const Divider(height: 24, thickness: 1),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Tổng thanh toán:",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.red),
+                        ),
+                        Text(
+                          "${currencyFormat.format(finalPrice)} đ",
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),

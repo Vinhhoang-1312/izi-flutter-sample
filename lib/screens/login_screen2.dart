@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import '../controllers/auth_controller.dart';
+import 'package:get_storage/get_storage.dart';
 import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,13 +10,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final AuthController authController = Get.find<AuthController>();
-  final AuthService authService = AuthService();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
-  bool _isObscure = true; // Đảm bảo biến được khai báo đúng cách
+  final AuthService _authService = AuthService();
+  bool _isLoading = false; // Biến trạng thái loading
 
+  bool _isObscure = true; // Biến điều khiển ẩn/hiện mật khẩu
+// Hàm xử lý đăng nhập
   void _login() async {
     setState(() {
       _isLoading = true;
@@ -27,17 +26,17 @@ class _LoginScreenState extends State<LoginScreen> {
     String password = _passwordController.text.trim();
 
     if (phone.isEmpty || password.isEmpty) {
-      _showMessage("Vui lòng nhập tài khoản và mật khẩu!");
+      _showMessage("Vui lòng nhập đầy đủ thông tin!");
       setState(() {
         _isLoading = false;
       });
       return;
     }
 
-    var user = await authService.login(phone, password);
+    var user = await _authService.login(phone, password);
     if (user != null) {
-      authController.login(user); // Lưu thông tin người dùng vào AuthController
-      Get.offAllNamed('/home'); // Điều hướng sang trang Home
+      Navigator.pushReplacementNamed(
+          context, "/home"); // Chuyển sang trang home
     } else {
       _showMessage("Sai tài khoản hoặc mật khẩu!");
     }
@@ -47,6 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+// Hàm hiển thị thông báo lỗi
   void _showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),

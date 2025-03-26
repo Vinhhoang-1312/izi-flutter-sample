@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Định dạng số tiền VNĐ
-import '../../controllers/order_controller.dart';
 import 'package:get/get.dart';
 import '../../controllers/cart_controller.dart';
-import '../../screens/order_screen.dart';
+import '../../screens/order_summary_screen.dart';
 
 class CartSummary extends StatefulWidget {
   final num totalPrice;
@@ -30,10 +29,24 @@ class CartSummary extends StatefulWidget {
 class _CartSummaryState extends State<CartSummary> {
   final currencyFormat = NumberFormat("#,###", "vi_VN"); // Format tiền VNĐ
 
+  void _navigateToOrderSummary() {
+    final selectedItems = widget.cartItems
+        .where((item) => item['selected'] == true)
+        .toList(); // Lọc sản phẩm được chọn
+
+    if (selectedItems.isEmpty) {
+      Get.snackbar("Thông báo", "Vui lòng chọn sản phẩm để đặt hàng.");
+      return;
+    }
+
+    Get.to(() => OrderSummaryScreen(
+          userId: widget.userId,
+          selectedItems: selectedItems,
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    final CartController cartController = Get.find<CartController>();
-
     return Container(
       padding: const EdgeInsets.symmetric(
           vertical: 16, horizontal: 16), // Remove horizontal padding
@@ -135,13 +148,8 @@ class _CartSummaryState extends State<CartSummary> {
                   ),
                   const SizedBox(width: 5), // Điều chỉnh khoảng cách
                   ElevatedButton(
-                    onPressed: () {
-                      // Push selected items to CartController
-                      cartController.addItems(cartController.selectedItems);
-
-                      // Navigate to OrderScreen
-                      Get.to(() => const OrderScreen());
-                    },
+                    onPressed:
+                        _navigateToOrderSummary, // Điều hướng đến OrderSummaryScreen
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFF712D),
                       shape: RoundedRectangleBorder(

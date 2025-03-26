@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../services/auth_service.dart';
-import '../screens/login_screen.dart';
+import 'login_screen.dart';
 import '../controllers/cart_controller.dart'; // Import CartController
 
 class ProductDetailScreen extends StatelessWidget {

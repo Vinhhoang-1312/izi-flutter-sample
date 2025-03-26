@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+import 'package:dio/dio.dart';
 
 class CartController extends GetxController {
   var userCarts = <String, List<Map<String, dynamic>>>{}.obs;
+  final Dio _dio = Dio();
   final RxList<Map<String, dynamic>> cartItems = <Map<String, dynamic>>[].obs;
 
   List<Map<String, dynamic>> getCart(String userId) {
@@ -40,7 +42,8 @@ class CartController extends GetxController {
     userCarts.refresh();
   }
 
-  void updateQuantity(String userId, dynamic productId, int change) {
+  Future<void> updateQuantity(
+      String userId, dynamic productId, int change) async {
     if (!userCarts.containsKey(userId) || userCarts[userId] == null) return;
 
     var cart = userCarts[userId]!;
@@ -51,20 +54,46 @@ class CartController extends GetxController {
       int currentQuantity = (cart[index]['quantity'] as num).toInt();
       int newQuantity = (currentQuantity + change).clamp(1, 999);
 
-      cart[index]['quantity'] = newQuantity;
-
       if (newQuantity == 1 && change < 0) {
-        cart.removeAt(index);
+        // Nếu số lượng là 1 và nhấn "-", không giảm nữa
+        Get.snackbar("Thông báo", "Không thể giảm số lượng dưới 1.");
+        return;
       }
 
-      userCarts.refresh();
+      try {
+        // Gửi yêu cầu PUT đến API để cập nhật số lượng
+        await _dio.put(
+          'https://dummyjson.com/carts/$userId',
+          data: {
+            'productId': productId,
+            'quantity': newQuantity,
+          },
+        );
+
+        cart[index]['quantity'] = newQuantity;
+        userCarts.refresh(); // Làm mới danh sách
+      } catch (e) {
+        print('Lỗi khi cập nhật số lượng: $e');
+      }
+    } else {
+      print('Sản phẩm không tồn tại trong giỏ hàng.');
     }
   }
 
-  void removeFromCart(String userId, dynamic itemId) {
-    if (userCarts.containsKey(userId)) {
+  Future<void> removeFromCart(String userId, dynamic productId) async {
+    if (!userCarts.containsKey(userId)) return;
+
+    // Gửi yêu cầu DELETE đến API để xóa sản phẩm
+    try {
+      await _dio.delete('https://dummyjson.com/carts/$userId', data: {
+        'productId': productId,
+      });
+
       userCarts[userId]!
-          .removeWhere((item) => item['id'].toString() == itemId.toString());
+          .removeWhere((item) => item['id'].toString() == productId.toString());
+      userCarts.refresh();
+    } catch (e) {
+      print('Lỗi khi xóa sản phẩm: $e');
     }
   }
 

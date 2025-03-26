@@ -33,7 +33,7 @@ class OrderItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               image: DecorationImage(
                 image: AssetImage(
-                    item["image"]), // Use AssetImage for local images
+                    item["thumbnail"]), // Use AssetImage for local images
                 fit: BoxFit.cover,
               ),
             ),

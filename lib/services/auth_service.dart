@@ -7,21 +7,24 @@ class AuthService {
 
   Future<Map<String, dynamic>?> login(String phone, String password) async {
     try {
+      // Gửi yêu cầu POST đến API dummyJSON
       Response response = await _dio.post(
         'https://dummyjson.com/auth/login',
         data: {
-          'username': phone, // DummyJSON yêu cầu username, không phải phone
+          'username': phone,
           'password': password,
         },
       );
 
       if (response.statusCode == 200) {
-        _storage.write("user", response.data); // Lưu user vào GetStorage
-        return response.data; // Trả về thông tin user
+        final userData = response.data;
+        _storage.write("user", userData); // Lưu thông tin người dùng
+        return userData; // Trả về dữ liệu người dùng
       } else {
-        return null;
+        return null; // Trả về null nếu đăng nhập thất bại
       }
     } catch (e) {
+      print('Lỗi khi đăng nhập: $e'); // In lỗi để kiểm tra
       return null;
     }
   }
@@ -55,9 +58,7 @@ class AuthService {
 
   // Kiểm tra xem user đã đăng nhập chưa
   bool isLoggedIn() {
-    bool exists = _storage.hasData("user");
-    print("Kiểm tra trạng thái đăng nhập: $exists"); // Debug
-    return exists;
+    return _storage.hasData("user");
   }
 
   // Đăng xuất

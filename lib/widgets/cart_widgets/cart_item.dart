@@ -161,7 +161,9 @@ class CartItem extends StatelessWidget {
                           ),
                           child: IconButton(
                             padding: EdgeInsets.zero,
-                            onPressed: () => onUpdateQuantity(-1),
+                            onPressed: item['quantity'] > 1
+                                ? () => onUpdateQuantity(-1)
+                                : null, // Vô hiệu hóa nếu số lượng là 1
                             icon: const Icon(Icons.remove,
                                 size: 14, color: Colors.black),
                           ),
