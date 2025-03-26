@@ -186,7 +186,7 @@ class _RecheckOrderItemState extends State<RecheckOrderItem> {
       ),
       _buildPaymentIcon(
         Image.asset(
-          "assets/images/momo.png",
+          "assets/images/momotrang.png",
           width: 40, // Giảm kích thước ảnh
           height: 30,
           fit: BoxFit.contain,

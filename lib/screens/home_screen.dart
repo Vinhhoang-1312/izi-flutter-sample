@@ -7,6 +7,7 @@ import 'order_summary_screen.dart'; // Import lại OrderSummaryScreen
 import 'home_page.dart';
 import 'account_screen.dart';
 import 'login_screen.dart';
+import 'screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,10 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
     // Khởi tạo _pages
     _pages = [
       HomePage(),
-      OrderSummaryScreen(
-        userId: authController.userId,
-        selectedItems: [], // Truyền danh sách sản phẩm mặc định
-      ),
+      // OrderSummaryScreen(
+      //   userId: authController.userId,
+      //   selectedItems: [], // Truyền danh sách sản phẩm mặc định
+      // ),
+      NavigationScreen(),
       CartScreen(userId: authController.userId), // Truyền userId hợp lệ
       const AccountScreen(),
     ];

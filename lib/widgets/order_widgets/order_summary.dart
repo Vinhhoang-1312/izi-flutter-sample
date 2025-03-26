@@ -3,17 +3,13 @@ import 'package:intl/intl.dart'; // Định dạng số tiền VNĐ
 import 'package:flutter_switch/flutter_switch.dart';
 
 class OrderSummary extends StatelessWidget {
-  final List<Map<String, dynamic>> cartItems;
-  final num totalPrice;
-  final num discount;
-  final num finalPrice;
+  final String userId;
+  final VoidCallback onPressed;
 
   const OrderSummary({
     super.key,
-    required this.cartItems,
-    required this.totalPrice,
-    required this.discount,
-    required this.finalPrice,
+    required this.userId,
+    required this.onPressed,
   });
 
   @override
@@ -162,81 +158,79 @@ class OrderSummary extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Tổng tiền hàng:",
-                          style: TextStyle(fontSize: 14, color: Colors.black),
-                        ),
-                        Text(
-                          "${currencyFormat.format(totalPrice)} đ",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Giảm giá:",
-                          style: TextStyle(fontSize: 14, color: Colors.black),
-                        ),
-                        Text(
-                          "-${currencyFormat.format(discount)} đ",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         const Text(
+                //           "Tổng tiền hàng:",
+                //           style: TextStyle(fontSize: 14, color: Colors.black),
+                //         ),
+                //         Text(
+                //           "${currencyFormat.format(totalPrice)} đ",
+                //           style: const TextStyle(
+                //               fontWeight: FontWeight.bold, fontSize: 14),
+                //         ),
+                //       ],
+                //     ),
+                //   ],
+                // ),
+                // const SizedBox(height: 8),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         const Text(
+                //           "Giảm giá:",
+                //           style: TextStyle(fontSize: 14, color: Colors.black),
+                //         ),
+                //         Text(
+                //           "-${currencyFormat.format(discount)} đ",
+                //           style: const TextStyle(
+                //               fontWeight: FontWeight.bold, fontSize: 14),
+                //         ),
+                //       ],
+                //     ),
+                //   ],
+                // ),
                 const Divider(height: 24, thickness: 1),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Tổng thanh toán:",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.red),
-                        ),
-                        Text(
-                          "${currencyFormat.format(finalPrice)} đ",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ],
-                    ),
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     const Text(
+                    //       "Tổng thanh toán:",
+                    //       style: TextStyle(
+                    //           fontWeight: FontWeight.bold,
+                    //           fontSize: 16,
+                    //           color: Colors.red),
+                    //     ),
+                    //     Text(
+                    //       "${currencyFormat.format(finalPrice)} đ",
+                    //       style: const TextStyle(
+                    //           fontWeight: FontWeight.bold, fontSize: 16),
+                    //     ),
+                    //   ],
+                    // ),
                     ElevatedButton(
                       onPressed: () {
-                        // Thêm logic thanh toán ở đây
+                        // Thêm logic POST lên API tại đây
+                        print(
+                            "POST sản phẩm đã chọn lên API với userId: $userId");
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFF712D),
-                        minimumSize:
-                            const Size(201, 44), // Set width and height
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // Bo góc 8px
-                        ),
+                        minimumSize: const Size(double.infinity, 44),
                       ),
                       child: const Text(
-                        "Đặt hàng",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                        "Xác nhận",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
                   ],

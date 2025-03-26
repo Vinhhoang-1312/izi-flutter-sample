@@ -11,6 +11,8 @@ import 'screens/createOrder_screen.dart';
 import './services/auth_service.dart';
 import './controllers/auth_controller.dart';
 import './controllers/cart_controller.dart';
+import 'package:flutter/rendering.dart'; // Thêm dòng này
+import './screens/screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +20,7 @@ void main() async {
   Get.put(AuthController()); // Đăng ký AuthController toàn cục
   Get.put(AuthService()); // Đăng ký AuthService toàn cục
   Get.put(CartController()); // Đăng ký CartController toàn cục
-
+  debugPaintSizeEnabled = false; // Bật khung debug
   runApp(const MyApp());
 }
 
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/login', page: () => const LoginScreen()),
         GetPage(name: '/register', page: () => const RegisterScreen()),
         GetPage(name: '/home', page: () => const HomeScreen()),
+        GetPage(name: '/screen', page: () => NavigationScreen()),
         GetPage(
           name: '/cart',
           page: () => const CartScreen(userId: ''),

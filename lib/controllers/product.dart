@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import 'dart:math'; // Import thư viện để random
 import '../services/api_service.dart';
-import '../models/product.dart';
 import '../services/auth_service.dart';
 
 class ProductController extends GetxController {

@@ -19,18 +19,16 @@ class AuthController extends GetxController {
   }
 
   void login(Map<String, dynamic> userData) {
-    // Lưu thông tin người dùng vào GetStorage
     _storage.write("user", userData);
     isLoggedIn.value = true;
     userId = userData["id"].toString(); // Gán userId khi đăng nhập thành công
-    update(); // Cập nhật trạng thái
+    update();
   }
 
   void logout() {
-    // Xóa thông tin người dùng khỏi GetStorage
     _storage.remove("user");
     isLoggedIn.value = false;
-    userId = ""; // Xóa userId khi đăng xuất
-    update(); // Cập nhật trạng thái
+    userId = "";
+    update();
   }
 }

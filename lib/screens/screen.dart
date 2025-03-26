@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_app/controllers/auth_controller.dart';
 import 'package:my_app/screens/account_screen.dart';
+import 'package:my_app/screens/home_screen.dart';
 import 'package:my_app/screens/login_screen.dart';
 import 'package:my_app/screens/wallet_screen.dart';
 import 'package:my_app/screens/createOrder_screen.dart';
@@ -22,7 +23,7 @@ class NavigationScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            buildNavButton(context, "Section 1", LoginScreen()),
+            buildNavButton(context, "Section 1", HomeScreen()),
             // buildNavButton(context, "Section 2",
             //     CartScreen(userId: userId)), // Truyền userId
             buildNavButton(
